@@ -1,11 +1,43 @@
-<div align="center">
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+# FinanceFlow Tracker - Backend Integration Guide
 
-  <h1>Built with AI Studio</h2>
+Since you're building the backend yourself, here is the API contract your server needs to satisfy.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🔗 Configuration
+Update `services/apiClient.ts` with your server's URL.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🛠️ API Endpoints
 
-</div>
+### Authentication
+- `POST /auth/register`
+  - Body: `{ email, password }`
+  - Response: `{ token: string, user: { uid: string, email: string, displayName: string } }`
+- `POST /auth/login`
+  - Body: `{ email, password }`
+  - Response: `{ token: string, user: { uid: string, email: string, displayName: string } }`
+- `GET /auth/me`
+  - Header: `Authorization: Bearer <token>`
+  - Response: `{ uid: string, email: string, displayName: string }`
+
+### Expenses
+- `GET /expenses`
+  - Header: `Authorization: Bearer <token>`
+  - Response: `Array<Expense>`
+- `POST /expenses`
+  - Body: `{ amount, category, description, date }`
+  - Response: `Expense` (including generated `id`)
+- `PUT /expenses/:id`
+  - Body: `Partial<Expense>`
+  - Response: `Expense`
+- `DELETE /expenses/:id`
+  - Response: `204 No Content`
+
+### Budgets
+- `GET /budgets`
+  - Response: `Array<Budget>`
+- `POST /budgets`
+  - Body: `{ category, amount }`
+  - Response: `Budget`
+
+## 📊 Data Models (TypeScript)
+Refer to `types.ts` for the exact object shapes. Use the same field names to ensure compatibility with the frontend.
